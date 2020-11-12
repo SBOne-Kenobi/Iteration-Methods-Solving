@@ -9,4 +9,4 @@ include_directories(include)
 add_executable(iteration src/main.cpp
         include/Matrix.h include/Matrix_impl.inl
         include/ArithmeticRestriction.h
-        )
+        include/IterationMethod.h)
