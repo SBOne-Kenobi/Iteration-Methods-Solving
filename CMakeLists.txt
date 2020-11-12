@@ -7,4 +7,6 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
 include_directories(include)
 
 add_executable(iteration src/main.cpp
-        include/Matrix.h src/Matrix.cpp include/ArithmeticRestriction.h)
+        include/Matrix.h include/Matrix_impl.inl
+        include/ArithmeticRestriction.h
+        )

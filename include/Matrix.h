@@ -1,6 +1,7 @@
 #pragma once
 
-#include <vector>
+#include <ostream>
+#include <istream>
 #include <algorithm>
 #include "ArithmeticRestriction.h"
 
@@ -14,13 +15,16 @@ namespace LinearAlgebra {
   template<typename T>
   class Matrix : ArithmeticRestriction<T> {
   private:
+    bool check_size(const Matrix &other) const;
+
+  protected:
     T *_data;
     size_t _cols;
     size_t _rows;
 
-    bool check_size(const Matrix &other) const;
-
   public:
+    Matrix();
+
     Matrix(size_t rows, size_t cols, const T &value = T());
 
     Matrix(const Matrix &other);
@@ -47,6 +51,14 @@ namespace LinearAlgebra {
     Matrix operator*(const Matrix &other) const;
 
     Matrix& operator*=(const Matrix &other);
+
+    template<typename U>
+    friend std::istream& operator>>(std::istream& is, Matrix<U>& m);
+
+    template<typename U>
+    friend std::ostream &operator<<(std::ostream &os, const Matrix<U> &m);
   };
 
 }
+
+#include "Matrix_impl.inl"
