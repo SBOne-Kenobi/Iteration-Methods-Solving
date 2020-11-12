@@ -1,12 +1,21 @@
 #include "Matrix.h"
+#include "SimpleIterationMethod.h"
+
 #include <iostream>
+
+using namespace LinearAlgebra;
 
 int main() {
 
-  LinearAlgebra::Matrix<int> A, B;
-  std::freopen("input.txt", "r", stdin);
-  std::cin >> A >> B;
-  std::cout << A * B;
+  freopen("input.txt", "r", stdin);
+
+  LinearAlgebra::Matrix<double> A, b;
+  std::cin >> A >> b;
+  A = SimpleIterationMethod<double>::getStepMatrixFromEquationMatrix(A);
+  SimpleIterationMethod method(A, b);
+  method.setInitialState(Matrix<double>(3, 1, 1));
+  method.makeSteps(100);
+  std::cout << method.getCurrent() << "\n";
 
   return 0;
 }

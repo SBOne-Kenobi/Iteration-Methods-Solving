@@ -2,22 +2,28 @@
 
 #include <cstddef>
 
-template<typename T>
-class IterationMethod {
-protected:
-  T current;
+namespace LinearAlgebra {
 
-public:
-  virtual void setInitialState(const T& init) = 0;
+  template<typename T>
+  class IterationMethod {
+  protected:
+    T current;
 
-  virtual void makeStep() = 0;
+  public:
+    virtual void setInitialState(const T &init) {
+      current = init;
+    }
 
-  void makeSteps(size_t n) {
-    while (n--)
-      makeStep();
-  }
+    virtual void makeStep() = 0;
 
-  const T& getCurrent() const {
-    return current;
-  }
-};
+    void makeSteps(size_t n) {
+      while (n--)
+        makeStep();
+    }
+
+    const T &getCurrent() const {
+      return current;
+    }
+  };
+
+}

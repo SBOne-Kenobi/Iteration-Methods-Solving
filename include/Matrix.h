@@ -3,6 +3,7 @@
 #include <ostream>
 #include <istream>
 #include <algorithm>
+#include <vector>
 #include "ArithmeticRestriction.h"
 
 namespace LinearAlgebra {
@@ -19,13 +20,17 @@ namespace LinearAlgebra {
 
   protected:
     T *_data;
-    size_t _cols;
-    size_t _rows;
+    size_t _cols{};
+    size_t _rows{};
 
   public:
     Matrix();
 
     Matrix(size_t rows, size_t cols, const T &value = T());
+
+    Matrix(std::initializer_list<T> diag);
+
+    explicit Matrix(std::vector<T> diag);
 
     Matrix(const Matrix &other);
 
@@ -47,6 +52,10 @@ namespace LinearAlgebra {
     Matrix &operator+=(const Matrix &other);
 
     Matrix operator+(const Matrix &other) const;
+
+    Matrix &operator-=(const Matrix &other);
+
+    Matrix operator-(const Matrix &other) const;
 
     Matrix operator*(const Matrix &other) const;
 

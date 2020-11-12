@@ -1,3 +1,7 @@
+#include <vector>
+#include "Matrix.h"
+
+
 namespace LinearAlgebra {
 
   template<typename T>
@@ -33,7 +37,7 @@ namespace LinearAlgebra {
   }
 
   template<typename T>
-  Matrix<T> &Matrix<T>::operator=(const Matrix &other) {
+  Matrix <T> &Matrix<T>::operator=(const Matrix &other) {
     if (&other != this) {
       Matrix tmp = Matrix(other);
       swap(*this, tmp);
@@ -73,6 +77,20 @@ namespace LinearAlgebra {
   template<typename T>
   Matrix <T> Matrix<T>::operator+(const Matrix &other) const {
     return (Matrix(*this) += other);
+  }
+
+  template<typename T>
+  Matrix <T> &Matrix<T>::operator-=(const Matrix &other) {
+    if (!check_size(other))
+      throw MismatchMatrixSize();
+    for (size_t i = 0; i < _rows * _cols; i++)
+      _data[i] -= other._data[i];
+    return *this;
+  }
+
+  template<typename T>
+  Matrix <T> Matrix<T>::operator-(const Matrix &other) const {
+    return (Matrix(*this) -= other);
   }
 
   template<typename T>
@@ -118,5 +136,16 @@ namespace LinearAlgebra {
     return os;
   }
 
+  template<typename T>
+  Matrix<T>::Matrix(std::initializer_list<T> diag) : Matrix(diag.size(), diag.size()) {
+    for (size_t i = 0; i < _rows; i++)
+      _data[i + i * _cols] = *(diag.begin() + i);
+  }
+
+  template<typename T>
+  Matrix<T>::Matrix(std::vector<T> diag) : Matrix(diag.size(), diag.size()) {
+    for (size_t i = 0; i < _rows; i++)
+      _data[i + i * _cols] = diag[i];
+  }
 
 }
