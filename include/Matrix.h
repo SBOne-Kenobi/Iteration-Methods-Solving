@@ -25,6 +25,8 @@ namespace LinearAlgebra {
 
     Matrix(const Matrix &other);
 
+    ~Matrix();
+
     template<typename U>
     friend void swap(Matrix<U>& a, Matrix<U>& b);
 

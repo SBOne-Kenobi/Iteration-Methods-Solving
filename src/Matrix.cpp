@@ -27,6 +27,11 @@ namespace LinearAlgebra {
   }
 
   template<typename T>
+  Matrix<T>::~Matrix() {
+    delete[] _data;
+  }
+
+  template<typename T>
   Matrix<T> &Matrix<T>::operator=(const Matrix &other) {
     if (&other != this) {
       swap(*this, Matrix(other));
@@ -46,7 +51,7 @@ namespace LinearAlgebra {
 
   template<typename T>
   T *Matrix<T>::operator[](size_t row) {
-    return _data[row];
+    return _data[row * _cols];
   }
 
   template<typename T>
