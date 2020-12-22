@@ -138,10 +138,6 @@ def run_all_tests():
         [0, 2, 0.02, 0, 5],
         [0, -1, 0.02, 5, -1]
     ])
-    A = Matrix.random(5, 5)
-    for i in range(A.height):
-        for j in range(A.width):
-            A[i][j] = A[j][i]
 
     QRAlgo_test(A)
     B = Tridiagonalization_test(A)

@@ -156,6 +156,6 @@ all_tasks = [task_1, task_2, task_3, task_4, task_5, task_6, task_7, task_8, tas
 
 def run_all_tasks():
     for i in range(len(all_tasks)):
-        print(f"Задача \n{i + 1}:")
+        print(f"Задача {i + 1}:")
         all_tasks[i]()
         print("-------\n")
