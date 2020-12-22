@@ -24,7 +24,9 @@ def build_nxn(n):
                 (x, y + (2 * x + 1)),
                 (x, y - (2 * x + 1))
             ]:
-                A[v][num(i, j)] += 1
+                u = num(i, j)
+                A[v][u] += 1
+                A[u][v] += 1
     return A
 
 
@@ -58,6 +60,7 @@ def build_p_inf(p):
     for x in range(p + 1):
         for y in [inc(x), dec(x), rev(x)]:
             A[x][y] += 1
+            A[y][x] += 1
     return A
 
 
