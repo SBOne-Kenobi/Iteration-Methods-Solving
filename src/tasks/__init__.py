@@ -3,6 +3,8 @@ from SIM import *
 from GaussZeidel import *
 from GivensRotation import *
 from HHTransform import *
+from QRAlgorithm import *
+from Tridiagonal import *
 
 
 def print_ans(x):
@@ -16,7 +18,7 @@ def task_1():
     A = input_matrix()
     b = input_vector()
     eps = input_accuracy()
-    x = simple_iteration(A, b, eps)
+    x = simple_iteration_method(A, b, eps)
     print_ans([
         ("x", x)
     ])
@@ -41,7 +43,7 @@ def task_3():
     c, s = map(float, input().split())
     givens_mul(A, i, j, c, s)
     print_ans([
-        (f"G({i}, {j}, {c}, {s}) A", A)
+        (f"G({i}, {j}, {c}, {s}) * A", A)
     ])
 
 
@@ -72,11 +74,57 @@ def task_6():
     ])
 
 
-all_tasks = [task_1, task_2, task_3, task_4, task_5, task_6]
+def task_7():
+    A = input_matrix()
+    x = input_vector()
+    eps = input_accuracy()
+    res = simple_iteration(A, x, eps)
+    if res == 0:
+        print_ans([
+            ("fail", 0)
+        ])
+    else:
+        k, v = res
+        print_ans([
+            ("eigen value", k),
+            ("eigen vector", v)
+        ])
+
+
+def task_8():
+    A = input_matrix()
+    eps = input_accuracy()
+    eigens, Q = QRAlgo(A, eps)
+    print_ans([
+        ("eigen values", eigens),
+        ("Qk", Q)
+    ])
+
+
+def task_9():
+    A = input_matrix()
+    B, Q = tridiagonalization(A)
+    print_ans([
+        ("A'", B),
+        ("Q", Q)
+    ])
+
+
+def task_10():
+    A = input_matrix()
+    eps = input_accuracy()
+    eigens, Q = QRAlgo(A, eps, QR_Tridiagonal)
+    print_ans([
+        ("eigen values", eigens),
+        ("Qk", Q)
+    ])
+
+
+all_tasks = [task_1, task_2, task_3, task_4, task_5, task_6, task_7, task_8, task_9, task_10]
 
 
 def run_all_tasks():
     for i in range(len(all_tasks)):
         print(f"Задача \n{i + 1}:")
         all_tasks[i]()
-        print("----------------\n")
+        print("-------\n")

@@ -3,22 +3,32 @@ from SIM import *
 from GaussZeidel import *
 from GivensRotation import *
 from HHTransform import *
+from QRAlgorithm import *
+from Tridiagonal import *
 
 eps = 1e-14
 
 
 def SIM_test(A, b):
-    x = simple_iteration(A, b, eps)
+    x = simple_iteration_method(A, b, eps)
     assert (x == A * x + b)
+    print("SIM_test: OK")
 
 
 def GZ_test(A, b):
     x = gauss_zeidel(A, b, eps)
     assert (A * x == b)
+    print("GZ_test: OK")
 
 
-def QR_test(A, qr_alg):
-    Q, R = qr_alg(A)
+def QR_dec_test(A, qr_dec):
+    Q, R = qr_dec(A)
+    if type(Q) != Matrix:
+        tmp = Q
+        Q = Matrix.unit(A.width)
+        for (i, j, c, s) in tmp:
+            givens_mul_right(Q, i, j, c, s)
+
     assert (Q * (Q.transpose()) == Matrix.unit(Q.width))
 
     for i in range(R.height):
@@ -26,6 +36,30 @@ def QR_test(A, qr_alg):
             assert (eq(R[i][j], 0))
 
     assert (Q * R == A)
+    print(f"{qr_dec.__name__}_test: OK")
+
+
+def SI_test(A):
+    x = Matrix.random(A.width, 1)
+    k, v = simple_iteration(A, x, eps)
+    assert (A * v == k * v)
+    print("SI_test: OK")
+
+
+def QRAlgo_test(A, qr_dec=QR_Givens):
+    evals, Q = QRAlgo(A, eps, qr_dec)
+
+    for i in range(Q.width):
+        evector = Matrix.vector([Q[j][i] for j in range(Q.height)])
+        assert (A * evector == evals[i] * evector)
+    print(f"QRAlgo_{qr_dec.__name__}_test: OK")
+
+
+def Tridiagonalization_test(A):
+    B, Q = tridiagonalization(A)
+    B.tridiagonal()
+    assert (Q.transpose() * A * Q == B)
+    return B
 
 
 def run_all_tests():
@@ -44,5 +78,23 @@ def run_all_tests():
         [1, 0, 1],
         [0, 1, 0]
     ])
-    QR_test(A, QR_Givens)
-    QR_test(A, QR_Householder)
+    QR_dec_test(A, QR_Givens)
+    QR_dec_test(A, QR_Householder)
+
+    SI_test(A)
+
+    A = Matrix([
+        [4, 1, 1, 0, 0],
+        [1, -1.1, 1, 2, -1],
+        [1, 1, -3, 0.02, 0.02],
+        [0, 2, 0.02, 0, 5],
+        [0, -1, 0.02, 5, -1]
+    ])
+
+    QRAlgo_test(A)
+    B = Tridiagonalization_test(A)
+    QR_dec_test(B, QR_Tridiagonal)
+    QRAlgo_test(B, QR_Tridiagonal)
+
+    print("-------")
+    print("All tests: OK")

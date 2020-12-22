@@ -189,7 +189,7 @@ class Matrix:
             result[i] = (self[i][i], sum(map(abs, self[i])) - abs(self[i][i]))
         return result
 
-    def gc_check(self, eps=global_eps):
+    def circle_check(self, eps=global_eps):
         for cent, rad in self.gershgorin_circles():
             if rad > eps:
                 return False

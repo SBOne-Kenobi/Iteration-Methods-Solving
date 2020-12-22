@@ -1,1 +1,2 @@
+from SIM.simple_iteration_method import simple_iteration_method
 from SIM.simple_iteration import simple_iteration
