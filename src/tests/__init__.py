@@ -5,6 +5,8 @@ from GivensRotation import *
 from HHTransform import *
 from QRAlgorithm import *
 from Tridiagonal import *
+from Graphs import *
+import random
 
 eps = 1e-14
 
@@ -62,6 +64,52 @@ def Tridiagonalization_test(A):
     return B
 
 
+def FastQRAlgo_test(A):
+    evals, Q = FastQRAlgo(A, eps)
+
+    for i in range(Q.width):
+        evector = Matrix.vector([Q[j][i] for j in range(Q.height)])
+        assert (A * evector == evals[i] * evector)
+    print("FastQRAlgo_test: OK")
+
+
+def gen_random_shuffle_matrix(n):
+    p = [i for i in range(n)]
+    random.shuffle(p)
+    P = Matrix.zero(n, n)
+    rP = Matrix.zero(n, n)
+    for i in range(n):
+        P[i][p[i]] = 1
+        rP[p[i]][i] = 1
+    assert (P * rP == Matrix.unit(n))
+    return P, rP
+
+
+def shuffle_matrix(A):
+    P, rP = gen_random_shuffle_matrix(A.width)
+    return P * A * rP
+
+
+def Isomorphism_test(A, B, exp):
+    assert (isomorphism(A, A) == 1)
+    assert (isomorphism(B, B) == 1)
+    assert (isomorphism(A, B) == exp)
+    C = shuffle_matrix(A)
+    assert (isomorphism(A, C) == 1)
+    C = shuffle_matrix(B)
+    assert (isomorphism(B, C) == 1)
+
+    print("Isomorphism_test: OK")
+
+
+def Expanders_test():
+    A = build_nxn(2)
+    assert (eq(count_alpha(A), 0.5))
+    A = build_p_inf(2)
+    assert (eq(count_alpha(A), 0.57735027))
+    print("Expanders_test: OK")
+
+
 def run_all_tests():
     A = Matrix([
         [0.4, 0],
@@ -90,11 +138,37 @@ def run_all_tests():
         [0, 2, 0.02, 0, 5],
         [0, -1, 0.02, 5, -1]
     ])
+    A = Matrix.random(5, 5)
+    for i in range(A.height):
+        for j in range(A.width):
+            A[i][j] = A[j][i]
 
     QRAlgo_test(A)
     B = Tridiagonalization_test(A)
     QR_dec_test(B, QR_Tridiagonal)
     QRAlgo_test(B, QR_Tridiagonal)
+    FastQRAlgo_test(B)
+
+    C = Matrix([
+        [1, 1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 0],
+        [0, 0, 1, 0, 0, 1],
+        [0, 0, 1, 0, 0, 1],
+        [0, 0, 0, 1, 1, 0]
+    ])
+    D = Matrix([
+        [0, 1, 1, 0, 0, 0],
+        [1, 0, 0, 1, 0, 0],
+        [1, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0, 1],
+        [0, 0, 1, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0]
+    ])
+
+    Isomorphism_test(C, D, 0)
+
+    Expanders_test()
 
     print("-------")
     print("All tests: OK")

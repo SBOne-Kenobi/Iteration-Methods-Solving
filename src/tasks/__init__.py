@@ -5,6 +5,7 @@ from GivensRotation import *
 from HHTransform import *
 from QRAlgorithm import *
 from Tridiagonal import *
+from Graphs import *
 
 
 def print_ans(x):
@@ -120,7 +121,37 @@ def task_10():
     ])
 
 
-all_tasks = [task_1, task_2, task_3, task_4, task_5, task_6, task_7, task_8, task_9, task_10]
+def task_11():
+    A = input_matrix()
+    eps = input_accuracy()
+    eigens, Q = FastQRAlgo(A, eps)
+    print_ans([
+        ("eigen values", eigens),
+        ("Qk", Q)
+    ])
+
+
+def task_12():
+    A = input_matrix()
+    B = input_matrix()
+    res = isomorphism(A, B)
+    print_ans([
+        ("isomorphism", res)
+    ])
+
+
+def task_13():
+    print("Введите 2 числа через пробел - n, p:")
+    n, p = map(int, input().split())
+    a1 = count_alpha(build_nxn(n))
+    a2 = count_alpha(build_p_inf(p))
+    print_ans([
+        ("alpha_1", a1),
+        ("alpha_2", a2),
+    ])
+
+
+all_tasks = [task_1, task_2, task_3, task_4, task_5, task_6, task_7, task_8, task_9, task_10, task_11, task_12, task_13]
 
 
 def run_all_tasks():
