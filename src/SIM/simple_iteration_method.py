@@ -8,7 +8,7 @@ def check_gershgorin_circles(A):
     max_dist = 0
     for cent, rad in circles:
         max_dist = max(max_dist, abs(cent) + rad)
-    return max_dist <= 1
+    return max_dist > 1
 
 
 def simple_iteration_method(A, b, eps=global_eps):
