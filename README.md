@@ -8,8 +8,8 @@
   - Givens' rotation
   - Hausholder reflection
 
-- Algorithms for finding eigen values
-  - Simple iteration for finding maximal eigen value
+- Algorithms for finding eigenvalues
+  - Simple iteration for finding maximal eigenvalue
   - QR-algorithm
   - QR-algorithm for tridiagonal matrix
   - speed up convergence QR-algorithm by Wilkinson shift
